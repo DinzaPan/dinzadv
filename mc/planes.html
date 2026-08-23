@@ -411,6 +411,12 @@ transform:translateY(-2px);
 background:#45f0bd;
 }
 
+.send-btn:disabled{
+opacity:0.6;
+cursor:not-allowed;
+transform:none;
+}
+
 .success-box{
 display:flex;
 flex-direction:column;
@@ -550,6 +556,8 @@ padding:24px;
 </div>
 <form action="https://formsubmit.co/dinzadv@gmail.com" method="POST" class="modal-form" onsubmit="handleFormSubmit(event)">
 <input type="hidden" name="_subject" id="emailSubject" value="Nueva Solicitud de Plan">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_template" value="table">
 <input type="hidden" name="Plan Seleccionado" id="hiddenPlanName">
 <input type="hidden" name="Precio / Tipo" id="hiddenPlanPrice">
 <div>
@@ -560,7 +568,7 @@ padding:24px;
 <label for="userDescription">Descripción de lo que vas a solicitar</label>
 <textarea id="userDescription" name="mensaje" placeholder="Escribe aquí los detalles del proyecto o de tu propuesta..." required></textarea>
 </div>
-<button type="submit" class="send-btn">Enviar Solicitud</button>
+<button type="submit" class="send-btn" id="submitBtn">Enviar Solicitud</button>
 </form>
 </div>
 </div>
@@ -602,21 +610,27 @@ document.getElementById(modalId).classList.remove('active');
 function handleFormSubmit(event){
 event.preventDefault();
 const form = event.target;
-const formData = new FormData(form);
+const submitBtn = document.getElementById('submitBtn');
+submitBtn.disabled = true;
+submitBtn.innerText = 'Enviando...';
 
 fetch(form.action, {
 method: 'POST',
-body: formData,
+body: new FormData(form),
 headers: {
 'Accept': 'application/json'
 }
 }).then(response => {
 closeModal('requestModal');
 form.reset();
+submitBtn.disabled = false;
+submitBtn.innerText = 'Enviar Solicitud';
 document.getElementById('successModal').classList.add('active');
 }).catch(error => {
 closeModal('requestModal');
 form.reset();
+submitBtn.disabled = false;
+submitBtn.innerText = 'Enviar Solicitud';
 document.getElementById('successModal').classList.add('active');
 });
 }
