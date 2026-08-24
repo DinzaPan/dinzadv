@@ -23,15 +23,17 @@ initMinecraftModel();
 });
 
 function initUpcomingModal(){
-var btnUpcoming=document.getElementById('btn-upcoming');
+var btnsUpcoming=document.querySelectorAll('.btn-upcoming');
 var modalOverlay=document.getElementById('upcoming-modal');
 var modalClose=document.getElementById('upcoming-close');
 
-if(!btnUpcoming || !modalOverlay || !modalClose) return;
+if(!btnsUpcoming.length || !modalOverlay || !modalClose) return;
 
-btnUpcoming.addEventListener('click',function(e){
+btnsUpcoming.forEach(function(btn){
+btn.addEventListener('click',function(e){
 e.preventDefault();
 modalOverlay.classList.add('active');
+});
 });
 
 modalClose.addEventListener('click',function(){
